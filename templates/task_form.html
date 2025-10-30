@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ action }} Task</title>
+    <style>
+        body { font-family: sans-serif; background: #f3f4f6; margin: 0; padding: 32px; }
+        form { max-width: 500px; margin: 48px auto; background: #fff; border-radius: 8px; padding: 32px; box-shadow: 0 2px 8px #ddd; }
+        h2 { margin-top: 0; }
+        label { display: block; margin-top: 12px; }
+        input, textarea, select { width: 100%; margin-top: 4px; margin-bottom: 16px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        button, a.btn { background: #2563eb; color: #fff; border: none; padding: 10px 18px; margin-right: 12px; border-radius: 6px; text-decoration: none; cursor: pointer; font-size: 1em; }
+        .actions { display: flex; gap: 12px; }
+    </style>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <h2>{{ action }} Task</h2>
+        <label>Title</label>
+        <input type="text" name="title" value="{{ task.title|default_if_none:'' }}" required>
+
+        <label>Description</label>
+        <textarea name="description">{{ task.description|default_if_none:'' }}</textarea>
+
+        {% if action == 'Update' %}
+        <label>Status</label>
+        <select name="status">
+            <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+        {% endif %}
+
+        <div class="actions">
+            <button type="submit">{{ action }}</button>
+            <a href="{% url 'task_list' %}" class="btn">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

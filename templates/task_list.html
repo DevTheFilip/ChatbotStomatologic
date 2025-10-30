@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <style>
+        body { font-family: sans-serif; background: #f3f4f6; margin: 0; padding: 32px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 8px #ddd; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; }
+        th { background: #f9fafb; }
+        tr:last-child td { border-bottom: none; }
+        a, button { border: none; background: none; color: #2563eb; cursor: pointer; text-decoration: underline; font-size: 1em; }
+        .actions { display: flex; gap: 12px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .btn { background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Tasks</h2>
+        <a class="btn" href="{% url 'task_create' %}">+ Add Task</a>
+    </div>
+    <table>
+        <thead>
+            <tr><th>Title</th><th>Description</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        {% for t in tasks %}
+            <tr>
+                <td>{{ t.title }}</td>
+                <td>{{ t.description }}</td>
+                <td>{{ t.status }}</td>
+                <td class="actions">
+                    <a href="{% url 'task_update' t.id %}">Edit</a>
+                    <a href="{% url 'task_delete' t.id %}">Delete</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4" style="text-align:center; color:#888;">No tasks yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
